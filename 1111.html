@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>CareerCraft AI (Offline Simulator)</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      max-width: 800px;
+      margin: auto;
+      background: #f9fafb;
+    }
+    input, textarea {
+      width: 100%;
+      margin-bottom: 10px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    button {
+      padding: 10px 20px;
+      background: #3b82f6;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-bottom: 20px;
+    }
+    button:hover {
+      background: #2563eb;
+    }
+    pre {
+      background: #f3f4f6;
+      padding: 15px;
+      white-space: pre-wrap;
+      border-left: 5px solid #3b82f6;
+      min-height: 100px;
+    }
+    h3 {
+      color: #1f2937;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>CareerCraft AI (Offline Simulator)</h1>
+
+  <h3>1. Resume Generator</h3>
+  <input id="name" placeholder="Full Name" />
+  <input id="location" placeholder="Location (City, Country)" />
+  <input id="contact" placeholder="Contact Info (Email, Phone)" />
+  <input id="education" placeholder="Highest Education" />
+  <input id="certifications" placeholder="Certifications (comma-separated)" />
+  <input id="skills" placeholder="Skills (comma-separated)" />
+  <input id="languages" placeholder="Languages (comma-separated)" />
+  <input id="experience" placeholder="Experience Summary" />
+  <input id="achievements" placeholder="Key Achievements (comma-separated)" />
+  <input id="target" placeholder="Target Job Role" />
+  <button onclick="generateResume()">Generate Resume</button>
+  <pre id="resumeOutput"></pre>
+
+  <h3>2. Career Assistance Test (CAT)</h3>
+  <input id="interests" placeholder="Your Interests" />
+  <input id="strengths" placeholder="Your Strengths" />
+  <input id="goals" placeholder="Your Career Goals" />
+  <textarea id="background" placeholder="Brief background (education, hobbies, etc.)"></textarea>
+  <button onclick="runCAT()">Run CAT Test</button>
+  <pre id="catOutput"></pre>
+
+  <script>
+    function generateResume() {
+      const name = document.getElementById("name").value.trim();
+      const location = document.getElementById("location").value.trim();
+      const contact = document.getElementById("contact").value.trim();
+      const education = document.getElementById("education").value.trim();
+      const certifications = document.getElementById("certifications").value.trim();
+      const skills = document.getElementById("skills").value.trim();
+      const languages = document.getElementById("languages").value.trim();
+      const experience = document.getElementById("experience").value.trim();
+      const achievements = document.getElementById("achievements").value.trim();
+      const target = document.getElementById("target").value.trim();
+
+      const uniqueSkills = [...new Set(skills.split(",").map(skill => skill.trim().toLowerCase()).filter(s => s))];
+
+      const resume = `
+============================
+        ${name}
+============================
+Location: ${location}
+Contact: ${contact}
+Target Role: ${target}
+
+🎓 Education:
+${education}
+
+📜 Certifications:
+${certifications}
+
+💼 Experience Summary:
+${experience}
+
+🛠 Skills:
+${skills}
+
+🏆 Achievements:
+${achievements}
+
+🌍 Languages:
+${languages}
+
+Suggested ATS Keywords:
+${uniqueSkills.join(", ")}
+      `;
+
+      document.getElementById("resumeOutput").textContent = resume.trim();
+    }
+
+    function runCAT() {
+      const interests = document.getElementById("interests").value.toLowerCase().trim();
+      const strengths = document.getElementById("strengths").value.toLowerCase().trim();
+      const goals = document.getElementById("goals").value.toLowerCase().trim();
+
+      if (!interests || !strengths || !goals) {
+        alert("Please fill out all CAT fields.");
+        return;
+      }
+
+      const mappings = [
+        {
+          domain: "Software Development",
+          interests: ["coding", "programming", "apps", "software"],
+          goals: ["software developer", "build apps", "engineer"],
+          roadmap:
+            "- Learn Python/JavaScript\n- Build projects\n- Learn Git\n- Join open-source\n- Apply for internships",
+        },
+        {
+          domain: "Data Science",
+          interests: ["data", "statistics", "machine learning", "ai"],
+          goals: ["data scientist", "ai researcher", "ml engineer"],
+          roadmap:
+            "- Learn Python & SQL\n- Study ML algorithms\n- Use Pandas/NumPy\n- Analyze datasets\n- Apply to data roles",
+        },
+        {
+          domain: "UI/UX Design",
+          interests: ["design", "figma", "creative", "visual"],
+          goals: ["ui designer", "ux expert", "product designer"],
+          roadmap:
+            "- Learn Figma/Adobe XD\n- Study UX principles\n- Build a design portfolio\n- Create case studies\n- Apply for design roles",
+        },
+        {
+          domain: "Machine Learning / AI",
+          interests: ["ai", "ml", "deep learning", "neural", "automation"],
+          goals: ["machine learning engineer", "ai researcher"],
+          roadmap:
+            "- Learn Python & ML libraries\n- Study algorithms\n- Work on AI projects\n- Publish your work\n- Apply for AI internships",
+        },
+        {
+          domain: "Project Management",
+          interests: ["organization", "team", "plan", "manage"],
+          goals: ["project manager", "team lead"],
+          roadmap:
+            "- Learn Agile/Scrum\n- Study project tools (Jira, Trello)\n- Take PMP/PMI basics\n- Manage mock projects\n- Apply as coordinator/assistant PM",
+        },
+        {
+          domain: "Performing Arts",
+          interests: ["dance", "music", "theater", "performance", "acting"],
+          goals: ["professional dancer", "performer", "choreographer"],
+          roadmap:
+            "- Train consistently in your art form\n- Join dance/theater groups\n- Attend workshops\n- Build a performance portfolio\n- Audition for roles & gigs",
+        },
+        {
+          domain: "Fitness & Wellness Coaching",
+          interests: ["fitness", "wellness", "health", "training", "coaching"],
+          goals: ["personal trainer", "wellness coach"],
+          roadmap:
+            "- Get certified in fitness or wellness\n- Build client relationships\n- Learn nutrition basics\n- Develop personalized plans\n- Grow your coaching business",
+        },
+      ];
+
+      const matchedDomains = [];
+
+      for (const map of mappings) {
+        const matchInterest = map.interests.some(i => interests.includes(i));
+        const matchGoal = map.goals.some(g => goals.includes(g));
+
+        if (matchInterest || matchGoal) {
+          matchedDomains.push({
+            domain: map.domain,
+            roadmap: map.roadmap,
+          });
+        }
+      }
+
+      let domainOutput = "";
+      let roadmapOutput = "";
+
+      if (matchedDomains.length > 0) {
+        domainOutput = matchedDomains
+          .map((d, i) => `${i + 1}. ${d.domain}`)
+          .join("\n");
+        roadmapOutput = matchedDomains
+          .map(d => `📘 ${d.domain} Roadmap:\n${d.roadmap}`)
+          .join("\n\n");
+      } else {
+        domainOutput = "1. General Career Exploration";
+        roadmapOutput =
+          "📘 General Roadmap:\n- Take career assessments\n- Explore beginner-level courses\n- Attend industry webinars\n- Get mentorship";
+      }
+
+      const result = `
+Profile Summary:
+- Interests: ${interests}
+- Strengths: ${strengths}
+- Goals: ${goals}
+
+🎯 Suggested Career Domains:
+${domainOutput}
+
+${roadmapOutput}
+      `;
+
+      document.getElementById("catOutput").textContent = result.trim();
+    }
+  </script>
+
+</body>
+</html>
